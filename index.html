@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.12.3/brython.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.12.3/brython_stdlib.min.js">
+  </script>
+</head>
+
+<body>
+  <div class = "game">
+    <img src="blob.png" id="player">
+    <script type="text/python">
+      from browser import document, html
+
+      class ElementMove:
+        def __init__(self, moving):
+          self.moving = moving
+          self.is_moving = False
+          self.moving.bind("mousedown", self.start)
+          self.moving.bind("mouseup", self.stop)
+          moving.style.cursor = "move"
+
+        def start(self, event):
+          self.is_moving = True
+          self.mouse_pos = [event.x, event.y]
+          self.elt_pos = [self.moving.left, self.moving.top]
+          document.bind("mousemove", self.move)
+          event.preventDefault()
+
+        def move(self, event):
+          if not self.is_moving:
+              return
+      
+          self.moving.left = self.elt_pos[0] + event.x - self.mouse_pos[0]
+          self.moving.top = self.elt_pos[1] + event.y - self.mouse_pos[1]
+
+        def stop(self, event):
+          self.is_moving = False
+          document.unbind("mousemove")
+
+      ElementMove(document["player"])
+    </script>
+  </div>
+</body>
+
+</html>
